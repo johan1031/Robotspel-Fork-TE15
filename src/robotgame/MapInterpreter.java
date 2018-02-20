@@ -7,6 +7,10 @@ import java.util.Scanner;
 
 import blocks.Block;
 import blocks.ExampleBlock;
+import blocks.Goal;
+import blocks.MovableBlock;
+import blocks.Points;
+import blocks.WallBlock;
 import javafx.scene.Group;
 
 /**
@@ -15,11 +19,12 @@ import javafx.scene.Group;
  */
 public class MapInterpreter extends Group {
 	
-	public final double SQUARE_SIZE = 45;
+	public static ArrayList<Robot> arr = new ArrayList<>();
+	public final double SQUARE_SIZE = 30;
 
 	public MapInterpreter() throws FileNotFoundException {
 
-		Scanner fileReader = new Scanner(new File("level1.txt"));
+		Scanner fileReader = new Scanner(new File("Map"));
 
 		int y = -1;
 		ArrayList<Integer> robotCoords = new ArrayList<Integer>();
@@ -35,15 +40,19 @@ public class MapInterpreter extends Group {
 				switch (block) {
 
 				case '#':
-					b = new ExampleBlock(SQUARE_SIZE);
+					b = new WallBlock(SQUARE_SIZE);
 					break;
 
 				case 'P':
-					b = new ExampleBlock(SQUARE_SIZE);
+					b = new Points(SQUARE_SIZE);
 					break;
 
 				case 'X':
-					b = new ExampleBlock(SQUARE_SIZE);
+					b = new Goal(SQUARE_SIZE);
+					break;
+					
+				case 'M':
+					b = new MovableBlock(SQUARE_SIZE);
 					break;
 
 				case 'R': // ROBOT
@@ -71,12 +80,13 @@ public class MapInterpreter extends Group {
 
 		}
 
-//		for (int i = 0; i < robotCoords.size(); i += 2) {
-//			Robot r = new Robot(SQUARE_SIZE);
-//			r.setTranslateX(robotCoords.get(i) * SQUARE_SIZE);
-//			r.setTranslateY(robotCoords.get(i + 1) * SQUARE_SIZE);
-//			this.getChildren().add(r);
-//		}
+		for (int i = 0; i < robotCoords.size(); i += 2) {
+			Robot r = new Robot(SQUARE_SIZE);
+			r.setTranslateX(robotCoords.get(i) * SQUARE_SIZE);
+			r.setTranslateY(robotCoords.get(i + 1) * SQUARE_SIZE);
+			this.getChildren().add(r);
+			arr.add(r);
+		}
 
 	}
 
